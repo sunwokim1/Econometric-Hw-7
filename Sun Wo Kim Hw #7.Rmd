@@ -175,6 +175,10 @@ ggplot(dat_graph, aes(x = income_midpoint, y = jitter(age_diff, factor = 2))) +
 
 #2e-16 is greater than -1.645. 
 
+#P-vaLue: < 2e-16 
+#T-stat: -9.796
+#Confint: [-0.3972, -0.3029]
+
 #Conclusion: Since the t-stat is greater than the z-score, we must fail to reject the null hypothesis. Thus, women do use more food stamps than men.
 
 ```
