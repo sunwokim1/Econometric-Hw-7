@@ -1,6 +1,6 @@
 ---
 title: 'Sun Wo Kim Hw #7'
-author: "Sun Wo Kim, Leonardo Alcaide, Maria Camilia Vergas, Nene Diallo, Arifa Begum"
+author: "Sun Wo Kim, Leonardo Alcaide, Maria Camila Vargas, Nene Diallo, Arifa Begum"
 output: html_document
 date: "2024-10-29"
 ---
