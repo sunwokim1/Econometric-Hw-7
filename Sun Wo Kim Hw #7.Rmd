@@ -76,95 +76,15 @@ gg <- ggplot(data = prediction_data, aes(x = AGE, y = predicted_educ)) +
 # Display the plot
 print(gg)
 
+# t-stat: 14.560 
+#p-value: <2e-16
+#Conf int: (-3.896278e-01) , (-3.105302e-01)
+#Conclusion:At the 90% confidence level, we reject the null hypothesis, indicating a significant relationship between household income levels and age differences in couples. Specifically, as the income midpoint increases, the age difference between partners decreases, suggesting a negative relationship. This supports the hypothesis that different age groups in the labor force exhibit significant differences in age gaps compared to those not in the labor force.
 
 ```
 
 ```{r Question 1b}
-
-# Hypothesis Tests and Analysis of Age Difference and Income Levels in Couples
- 
-#Hypothesis Test Setup
-# Null Hypothesis (H0): There is no relationship between income levels and age differences in couples in the labor force.
-# Alternative Hypothesis (H1): There is a relationship between income levels and age differences in couples, where higher income levels are associated with different age gaps.
-# The significance of the relationship will be tested at the 90% confidence level.
-# Load necessary libraries
-library(ggplot2)
-library(tidyverse)
-library(haven)
-library(forcats)
-
-# Load the dataset
-load("/Users/jaydenkim/Desktop/Econometrics/ACS_2021_couples.RData")
-
-# Subgroup Analysis:
-#This analysis aims to examine the relationship between income levels and age differences reported by couples, focusing on household income and age.Specifically, we investigate whether different age groups in the labor force exhibit larger age gaps in their relationships compared to those who are not in the labor force. We will use a 90% confidence level for statistical tests to determine if income levels significantly predict age differences in couples.
-
-# Step 1: Calculate the age difference between couples
-acs2021_couples <- acs2021_couples %>%
-  mutate(age_diff = AGE - h_age)
-
-# Verify age difference by summarizing age data for female-male couples
-summary(acs2021_couples$AGE[(acs2021_couples$SEX == "Female") & (acs2021_couples$h_sex == "Male")])
-summary(acs2021_couples$h_age[(acs2021_couples$SEX == "Female") & (acs2021_couples$h_sex == "Male")])
-
-# Step 2: Create income midpoint categories to classify household income levels
-# This provides a more interpretable scale for income in the analysis.
-acs_subgroup <- acs2021_couples %>%
-  mutate(income_midpoint = case_when(
-    HHINCOME < 25000 ~ 12500,
-    HHINCOME >= 25000 & HHINCOME < 35000 ~ 30000,
-    HHINCOME >= 35000 & HHINCOME < 50000 ~ 40000,
-    HHINCOME >= 50000 & HHINCOME < 75000 ~ 62500,
-    HHINCOME >= 75000 & HHINCOME < 100000 ~ 82500,
-    HHINCOME >= 100000 & HHINCOME < 150000 ~ 125000,
-    HHINCOME >= 150000 & HHINCOME < 200000 ~ 175000,
-    HHINCOME >= 200000 ~ 225000,
-    TRUE ~ NA_real_  # Handle missing income cases
-  ))
-
-# Step 3: Filter for labor force participants
-# Subset data to include individuals aged 25-85 who are active in the labor force (worked more than 4 weeks and at least 35 hours per week).
-acs_subgroup1 <- acs_subgroup %>%
-  filter(AGE >= 25 & AGE <= 85, WKSWORK2 > 4, UHRSWORK >= 35)
-
-# View the filtered dataset for verification
-#View(acs_subgroup1)
-
-
-
-# Step 4: Fit a linear model to test the relationship between income levels and age difference
-model_1 <- lm(age_diff ~ income_midpoint, data = acs_subgroup1)
-summary(model_1)
-confint(model_1, level = 0.90)
-
-#Results:
-#The coefficient for `income_midpoint` will indicate whether there is a statistically significant relationship between income and age difference. If the 90% confidence interval for `income_midpoint` does not include zero, we can reject the null hypothesis and conclude a significant relationship.
-
-# Step 5: Visualize the Relationship between Age Difference and Income Midpoint
-# Use a 10% random sample to make the plot clearer and less crowded
-set.seed(12345)  # Set seed for reproducibility
-NNobs <- nrow(acs_subgroup1)
-graph_obs <- (runif(NNobs) < 0.1)  # Randomly select 10% of observations
-dat_graph <- subset(acs_subgroup1, graph_obs)  # Subset for plotting
-
-# Plotting age difference vs. income midpoint with jitter for clearer visualization
-ggplot(dat_graph, aes(x = income_midpoint, y = jitter(age_diff, factor = 2))) +
-  geom_point(color = "darkgrey", alpha = 0.4) +
-  geom_smooth(method = "lm", color = "blue", se = TRUE) +
-  labs(
-    title = "Relationship between Income and Age Difference in Couples",
-    x = "Income Midpoint",
-    y = "Age Difference (Years)"
-  ) +
-  theme_minimal()
-
-# Conclusion:
-# At the 90% confidence level, examine the p-value for `income_midpoint` and the confidence interval. If `income_midpoint` is significant, it suggests that income levels do indeed influence age differences in couples in the labor force. We conclude that income levels may play a role in the age dynamics of couples, potentially influenced by labor force participation.
-
-```
-
-```{r Question 1c}
-# Part C: Hypothesis Test on Income Levels and Age Differences in Couples
+# Part b: Hypothesis Test on Income Levels and Age Differences in Couples
 
 # Hypothesis Test
 # Null Hypothesis (H0): There is no relationship between income levels and age differences in couples.
@@ -226,13 +146,18 @@ ggplot(dat_graph, aes(x = income_midpoint, y = jitter(age_diff, factor = 2))) +
   ) +
   theme_minimal()
 
+#P-vaLue: < 2e-16 
+#T-stat: -9.796
+#Confint: [-0.3972, -0.3029]
+
 # Conclusion:
-#At the 90% confidence level, examine if the confidence interval for `income_midpoint` excludes zero. A significant p-value and confidence interval excluding zero suggest that income influences age differences among couples in the labor force.
+#At the 90% confidence level, examine if the confidence interval for `income_midpoint` excludes zero. A significant p-value and confidence interval excluding zero suggest that income influences age differences among couples in the labor force. Since the p-value is extremely small, the t-statistic is large, and the confidence interval does not contain zero, we reject the null hypothesis. This means we have strong evidence to conclude that women do not use food stamps more than men.
+
 
 ```
 
 #Results
-```{r Question 1d}
+```{r Question 1c}
 #Null Hypothesis: Women use food stamps at a higher rate than men.
 #H₀: w > m
 
