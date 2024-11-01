@@ -146,9 +146,9 @@ ggplot(dat_graph, aes(x = income_midpoint, y = jitter(age_diff, factor = 2))) +
   ) +
   theme_minimal()
 
-#P-vaLue: < 2e-16 
-#T-stat: -9.796
-#Confint: [-0.3972, -0.3029]
+# t-stat: 14.560 
+#p-value: <2e-16
+#Conf int: (-3.896278e-01) , (-3.105302e-01)
 
 # Conclusion:
 #At the 90% confidence level, examine if the confidence interval for `income_midpoint` excludes zero. A significant p-value and confidence interval excluding zero suggest that income influences age differences among couples in the labor force. Since the p-value is extremely small, the t-statistic is large, and the confidence interval does not contain zero, we reject the null hypothesis. This means we have strong evidence to conclude that women do not use food stamps more than men.
